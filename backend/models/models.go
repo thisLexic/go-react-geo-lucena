@@ -49,8 +49,8 @@ type Area struct {
 type AreaEdge struct {
 	ID        int       `json:"-"`
 	AreaID    int       `json:"-"`
-	Latitude  float64   `json:"latitude"`
-	Longitude float64   `json:"longitude"`
+	Latitude  float64   `json:"lat"`
+	Longitude float64   `json:"lng"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }
