@@ -16,7 +16,7 @@ function Map() {
 
   useEffect(() => {
     async function fetchAreasAPI() {
-      let response = await fetch("http://localhost:4000/v1/area");
+      let response = await fetch("http://localhost:4000/v1/areas");
 
       if (response.status !== 200) {
         let errorMessage = `Invalid response code: ${response.status}`;
