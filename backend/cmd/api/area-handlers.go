@@ -18,13 +18,6 @@ func (app *application) getOneArea(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// area := models.Area{
-	// 	ID:          id,
-	// 	Description: "My Area",
-	// 	CreatedAt:   time.Now(),
-	// 	UpdatedAt:   time.Now(),
-	// }
-
 	area, err := app.models.DB.Get(id)
 	if err != nil {
 		app.errorJSON(w, err)
@@ -32,8 +25,22 @@ func (app *application) getOneArea(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = app.writeJSON(w, http.StatusOK, area, "area")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
 }
 
 func (app *application) getAllAreas(w http.ResponseWriter, r *http.Request) {
+	areas, err := app.models.DB.All()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
 
+	err = app.writeJSON(w, http.StatusOK, areas, "areas")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
 }
