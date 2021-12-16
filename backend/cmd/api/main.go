@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backend/cmd/models"
+	"backend/models"
 	"context"
 	"database/sql"
 	"flag"
