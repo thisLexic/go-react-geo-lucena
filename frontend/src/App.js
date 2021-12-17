@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  GoogleMap,
-  Polygon,
-  withScriptjs,
-  withGoogleMap,
-} from "react-google-maps";
+import SideBar from "./components/SideBar";
+import Map from "./components/Map";
 
-const lucenaLatLng = { lat: 13.941396, lng: 121.623444 };
-
-function Map() {
+function App() {
   const [areas, setAreas] = useState([]);
   const [isAreasLoaded, setIsAreasLoaded] = useState(false);
   const [error, setError] = useState(null);
+
+  const [areaDisplayIndex, setAreaDisplayIndex] = useState(null);
+  const [showArea, setShowArea] = useState(false);
+
+  const closeAreaHandler = () => setShowArea(false);
+  const showAreaHandler = (index) => {
+    setAreaDisplayIndex(index);
+    setShowArea(true);
+  };
+
+  const area = areas[areaDisplayIndex];
 
   useEffect(() => {
     async function fetchAreasAPI() {
@@ -22,7 +27,6 @@ function Map() {
         let errorMessage = `Invalid response code: ${response.status}`;
         let err = Error(errorMessage);
         setError(err);
-        console.log(err);
       } else {
         response = await response.json();
         setAreas(response.areas);
@@ -34,34 +38,17 @@ function Map() {
   }, []);
 
   return (
-    <GoogleMap defaultZoom={15} defaultCenter={lucenaLatLng}>
-      {error ? <p>An error occurred: {error.message}</p> : null}
-      {isAreasLoaded
-        ? areas.map((area) => (
-            <Polygon
-              path={area.edges}
-              strokeColor="#7CD1B8"
-              fillColor="#7CD1B8"
-              // strokeOpacity={0.8}
-              // strokeWeight={2}
-              // fillOpacity={0.35}
-            />
-          ))
-        : null}
-    </GoogleMap>
-  );
-}
-
-const WrappedMap = withScriptjs(withGoogleMap(Map));
-
-function App() {
-  return (
     <div style={{ width: `100vw`, height: `100vh` }}>
-      <WrappedMap
-        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_KEY}`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
+      <Map
+        areas={areas}
+        showAreaHandler={showAreaHandler}
+        isAreasLoaded={isAreasLoaded}
+        error={error}
+      />
+      <SideBar
+        area={area}
+        showArea={showArea}
+        closeAreaHandler={closeAreaHandler}
       />
     </div>
   );
