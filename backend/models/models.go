@@ -19,7 +19,7 @@ func NewModels(db *sql.DB) Models {
 
 // Risk is the type for risks
 type Risk struct {
-	ID        int       `json:"-"`
+	ID        int       `json:"id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`

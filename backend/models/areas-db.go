@@ -11,7 +11,7 @@ type DBModel struct {
 }
 
 // Get returns one area and error, if any
-func (m *DBModel) Get(id int) (*Area, error) {
+func (m *DBModel) AreaGet(id int) (*Area, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -92,7 +92,7 @@ func (m *DBModel) Get(id int) (*Area, error) {
 }
 
 // All returns all areas and error, if any
-func (m *DBModel) All() ([]*Area, error) {
+func (m *DBModel) AreasAll() ([]*Area, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -175,4 +175,37 @@ func (m *DBModel) All() ([]*Area, error) {
 		areas = append(areas, &area)
 	}
 	return areas, nil
+}
+
+func (m *DBModel) RisksAll() ([]*Risk, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `
+	select id, name, created_at, updated_at
+	from risk 
+	order by name
+	`
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var risks []*Risk
+	for rows.Next() {
+		var risk Risk
+		err := rows.Scan(
+			&risk.ID,
+			&risk.Name,
+			&risk.CreatedAt,
+			&risk.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		risks = append(risks, &risk)
+	}
+
+	return risks, nil
 }

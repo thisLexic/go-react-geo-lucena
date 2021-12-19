@@ -14,5 +14,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/v1/area/:id", app.getOneArea)
 	router.HandlerFunc(http.MethodGet, "/v1/areas", app.getAllAreas)
 
+	router.HandlerFunc(http.MethodGet, "/v1/risks", app.getAllRisks)
+
 	return app.enableCORS(router)
 }

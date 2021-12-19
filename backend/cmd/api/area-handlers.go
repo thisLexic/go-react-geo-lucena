@@ -18,7 +18,7 @@ func (app *application) getOneArea(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	area, err := app.models.DB.Get(id)
+	area, err := app.models.DB.AreaGet(id)
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -32,7 +32,7 @@ func (app *application) getOneArea(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getAllAreas(w http.ResponseWriter, r *http.Request) {
-	areas, err := app.models.DB.All()
+	areas, err := app.models.DB.AreasAll()
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -43,4 +43,19 @@ func (app *application) getAllAreas(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, err)
 		return
 	}
+}
+
+func (app *application) getAllRisks(w http.ResponseWriter, r *http.Request) {
+	risks, err := app.models.DB.RisksAll()
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, risks, "risks")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
 }
