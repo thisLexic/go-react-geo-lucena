@@ -5,6 +5,8 @@ import {
   withGoogleMap,
 } from "react-google-maps";
 
+import Risks from "./Risks";
+
 const lucenaLatLng = { lat: 13.941396, lng: 121.623444 };
 
 function RawMap(props) {
@@ -27,7 +29,16 @@ function RawMap(props) {
 
 const WrappedMap = withScriptjs(withGoogleMap(RawMap));
 function Map(props) {
-  const { areas, showAreaHandler, isAreasLoaded, error } = props;
+  const {
+    areas,
+    showAreaHandler,
+    isAreasLoaded,
+    risks,
+    isRisksLoaded,
+    riskDisplayIndex,
+    setRiskDisplayIndex,
+    error,
+  } = props;
   return (
     <>
       <WrappedMap
@@ -38,6 +49,12 @@ function Map(props) {
         showAreaHandler={showAreaHandler}
         areas={areas}
         isAreasLoaded={isAreasLoaded}
+      />
+      <Risks
+        risks={risks}
+        isRisksLoaded={isRisksLoaded}
+        riskDisplayIndex={riskDisplayIndex}
+        setRiskDisplayIndex={setRiskDisplayIndex}
       />
       {error ? (
         <p className="text-danger">An error occurred: {error?.message}</p>
