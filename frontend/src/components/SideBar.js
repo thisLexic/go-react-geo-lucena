@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import { Offcanvas, ListGroup } from "react-bootstrap";
 
-import { StateContext, DispatchContext } from "../store/contexts";
-import { SET_SHOW_AREA } from "../store/actions";
+import { StateContextArea, DispatchContextArea } from "../providers/area";
+import { SET_SHOW_AREA } from "../actions/area";
 
 function SideBar() {
-  const { areas, areaDisplayIndex, showArea } = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+  const { areas, areaDisplayIndex, showArea } = useContext(StateContextArea);
+  const areaDispatch = useContext(DispatchContextArea);
 
   const area = areas[areaDisplayIndex];
 
   const closeAreaHandler = () => {
-    dispatch({
+    areaDispatch({
       type: SET_SHOW_AREA,
       payload: { showArea: false, areaDisplayIndex: null },
     });

@@ -1,0 +1,3 @@
+export const SET_ALL_RISKS = "SET_ALL_RISKS";
+export const SET_IS_RISKS_LOADED = "SET_IS_RISKS_LOADED";
+export const SET_SHOW_RISK = "SET_SHOW_RISK";

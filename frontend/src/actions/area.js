@@ -1,0 +1,3 @@
+export const SET_ALL_AREAS = "SET_ALL_AREAS";
+export const SET_IS_AREAS_LOADED = "SET_IS_AREAS_LOADED";
+export const SET_SHOW_AREA = "SET_SHOW_AREA";
