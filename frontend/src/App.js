@@ -33,6 +33,10 @@ function App() {
       }
     }
 
+    fetchAreasAPI();
+  }, []);
+
+  useEffect(() => {
     async function fetchRisksAPI() {
       let response = await fetch("http://localhost:4000/v1/risks");
 
@@ -47,7 +51,6 @@ function App() {
       }
     }
 
-    fetchAreasAPI();
     fetchRisksAPI();
   }, []);
 
