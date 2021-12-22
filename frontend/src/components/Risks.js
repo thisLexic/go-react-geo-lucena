@@ -13,7 +13,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
   transform: translateX(-50%);
 `;
 
-function Risks(props) {
+function Risks() {
   const { risks, isRisksLoaded, riskDisplayIndex } = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 

@@ -37,8 +37,7 @@ function RawMap() {
 }
 
 const WrappedMap = withScriptjs(withGoogleMap(RawMap));
-function Map(props) {
-  const { risks, isRisksLoaded, riskDisplayIndex, setRiskDisplayIndex } = props;
+function Map() {
   const { error } = useContext(StateContext);
   return (
     <>
@@ -48,12 +47,7 @@ function Map(props) {
         containerElement={<div style={{ height: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
-      <Risks
-        risks={risks}
-        isRisksLoaded={isRisksLoaded}
-        riskDisplayIndex={riskDisplayIndex}
-        setRiskDisplayIndex={setRiskDisplayIndex}
-      />
+      <Risks />
       {error ? (
         <p className="text-danger">An error occurred: {error?.message}</p>
       ) : null}
