@@ -1,7 +1,22 @@
+import { useContext } from "react";
 import { Offcanvas, ListGroup } from "react-bootstrap";
 
-function SideBar(props) {
-  const { area, showArea, closeAreaHandler } = props;
+import { StateContext, DispatchContext } from "../store/contexts";
+import { SET_SHOW_AREA } from "../store/actions";
+
+function SideBar() {
+  const { areas, areaDisplayIndex, showArea } = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
+
+  const area = areas[areaDisplayIndex];
+
+  const closeAreaHandler = () => {
+    dispatch({
+      type: SET_SHOW_AREA,
+      payload: { showArea: false, areaDisplayIndex: null },
+    });
+  };
+
   return (
     <Offcanvas show={showArea} onHide={closeAreaHandler}>
       <Offcanvas.Header closeButton>

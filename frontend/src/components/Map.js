@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   GoogleMap,
   Polygon,
@@ -5,12 +6,15 @@ import {
   withGoogleMap,
 } from "react-google-maps";
 
+import { StateContext, DispatchContext } from "../store/contexts";
+import { SET_SHOW_AREA } from "../store/actions";
 import Risks from "./Risks";
 
 const lucenaLatLng = { lat: 13.941396, lng: 121.623444 };
 
-function RawMap(props) {
-  const { areas, showAreaHandler, isAreasLoaded } = props;
+function RawMap() {
+  const { areas, isAreasLoaded } = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
   return (
     <GoogleMap defaultZoom={15} defaultCenter={lucenaLatLng}>
       {isAreasLoaded
@@ -19,7 +23,12 @@ function RawMap(props) {
               path={area.edges}
               strokeColor="#7CD1B8"
               fillColor="#7CD1B8"
-              onClick={() => showAreaHandler(index)}
+              onClick={() =>
+                dispatch({
+                  type: SET_SHOW_AREA,
+                  payload: { showArea: true, areaDisplayIndex: index },
+                })
+              }
             />
           ))
         : null}
@@ -29,16 +38,8 @@ function RawMap(props) {
 
 const WrappedMap = withScriptjs(withGoogleMap(RawMap));
 function Map(props) {
-  const {
-    areas,
-    showAreaHandler,
-    isAreasLoaded,
-    risks,
-    isRisksLoaded,
-    riskDisplayIndex,
-    setRiskDisplayIndex,
-    error,
-  } = props;
+  const { risks, isRisksLoaded, riskDisplayIndex, setRiskDisplayIndex } = props;
+  const { error } = useContext(StateContext);
   return (
     <>
       <WrappedMap
@@ -46,9 +47,6 @@ function Map(props) {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        showAreaHandler={showAreaHandler}
-        areas={areas}
-        isAreasLoaded={isAreasLoaded}
       />
       <Risks
         risks={risks}

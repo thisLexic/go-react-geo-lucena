@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 
 import SideBar from "./components/SideBar";
 import Map from "./components/Map";
+import { appReducer, defaultState } from "./store/reducer";
+import { StateContext, DispatchContext } from "./store/contexts";
+import {
+  SET_ALL_AREAS,
+  SET_IS_AREAS_LOADED,
+  SET_ALL_RISKS,
+  SET_IS_RISKS_LOADED,
+  SET_ERROR,
+} from "./store/actions";
 
 function App() {
-  const [areas, setAreas] = useState([]);
-  const [isAreasLoaded, setIsAreasLoaded] = useState(false);
-  const [risks, setRisks] = useState([]);
-  const [isRisksLoaded, setIsRisksLoaded] = useState(false);
-  const [error, setError] = useState(null);
-
-  const [areaDisplayIndex, setAreaDisplayIndex] = useState(null);
-  const [showArea, setShowArea] = useState(false);
-  const [riskDisplayIndex, setRiskDisplayIndex] = useState(-1);
-
-  const closeAreaHandler = () => setShowArea(false);
-  const showAreaHandler = (index) => {
-    setAreaDisplayIndex(index);
-    setShowArea(true);
-  };
-
-  const area = areas[areaDisplayIndex];
+  const [state, dispatch] = useReducer(appReducer, defaultState);
 
   useEffect(() => {
     async function fetchAreasAPI() {
@@ -29,11 +22,11 @@ function App() {
       if (response.status !== 200) {
         let errorMessage = `Invalid response code: ${response.status}`;
         let err = Error(errorMessage);
-        setError(err);
+        dispatch({ type: SET_ERROR, payload: err });
       } else {
         response = await response.json();
-        setAreas(response.areas);
-        setIsAreasLoaded(true);
+        dispatch({ type: SET_ALL_AREAS, payload: response.areas });
+        dispatch({ type: SET_IS_AREAS_LOADED, payload: true });
       }
     }
 
@@ -43,11 +36,11 @@ function App() {
       if (response.status !== 200) {
         let errorMessage = `Invalid response code: ${response.status}`;
         let err = Error(errorMessage);
-        setError(err);
+        dispatch({ type: SET_ERROR, payload: err });
       } else {
         response = await response.json();
-        setRisks(response.risks);
-        setIsRisksLoaded(true);
+        dispatch({ type: SET_ALL_RISKS, payload: response.risks });
+        dispatch({ type: SET_IS_RISKS_LOADED, payload: true });
       }
     }
 
@@ -56,23 +49,14 @@ function App() {
   }, []);
 
   return (
-    <div style={{ width: `100vw`, height: `100vh` }}>
-      <Map
-        areas={areas}
-        showAreaHandler={showAreaHandler}
-        isAreasLoaded={isAreasLoaded}
-        risks={risks}
-        isRisksLoaded={isRisksLoaded}
-        riskDisplayIndex={riskDisplayIndex}
-        setRiskDisplayIndex={setRiskDisplayIndex}
-        error={error}
-      />
-      <SideBar
-        area={area}
-        showArea={showArea}
-        closeAreaHandler={closeAreaHandler}
-      />
-    </div>
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={state}>
+        <div style={{ width: `100vw`, height: `100vh` }}>
+          <Map />
+          <SideBar />
+        </div>
+      </StateContext.Provider>
+    </DispatchContext.Provider>
   );
 }
 

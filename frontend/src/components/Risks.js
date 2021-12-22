@@ -1,5 +1,10 @@
+import { useContext } from "react";
+
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import styled from "styled-components";
+
+import { StateContext, DispatchContext } from "../store/contexts";
+import { SET_SHOW_RISK } from "../store/actions";
 
 const StyledButtonGroup = styled(ButtonGroup)`
   position: absolute;
@@ -9,13 +14,20 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `;
 
 function Risks(props) {
-  const { risks, isRisksLoaded, riskDisplayIndex, setRiskDisplayIndex } = props;
+  const { risks, isRisksLoaded, riskDisplayIndex } = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
 
   const handleOnChange = (e) => {
     const riskIndex = parseInt(e.currentTarget.value);
     riskIndex === riskDisplayIndex
-      ? setRiskDisplayIndex(-1)
-      : setRiskDisplayIndex(riskIndex);
+      ? dispatch({
+          type: SET_SHOW_RISK,
+          payload: { showRisk: true, riskDisplayIndex: null },
+        })
+      : dispatch({
+          type: SET_SHOW_RISK,
+          payload: { showRisk: true, riskDisplayIndex: riskIndex },
+        });
   };
 
   return (
@@ -35,7 +47,6 @@ function Risks(props) {
             </ToggleButton>
           ))
         : null}
-      ))
     </StyledButtonGroup>
   );
 }
