@@ -13,26 +13,39 @@ import Risks from "./Risks";
 
 const lucenaLatLng = { lat: 13.941396, lng: 121.623444 };
 
-function RawMap() {
-  const { areas, isAreasLoaded } = useContext(StateContextArea);
+function Areas() {
+  const { areas, visibleAreasIDs, isAreasLoaded } =
+    useContext(StateContextArea);
   const areaDispatch = useContext(DispatchContextArea);
+
+  return (
+    <>
+      {isAreasLoaded
+        ? areas.map((area, index) => {
+            return (
+              <Polygon
+                key={index}
+                paths={area.edges}
+                options={{ strokeColor: "#7CD1B8", fillColor: "lightblue" }}
+                onClick={() =>
+                  areaDispatch({
+                    type: SET_SHOW_AREA,
+                    payload: { showArea: true, areaDisplayIndex: index },
+                  })
+                }
+                visible={visibleAreasIDs[area.id] || false}
+              />
+            );
+          })
+        : null}
+    </>
+  );
+}
+
+function RawMap() {
   return (
     <GoogleMap defaultZoom={15} defaultCenter={lucenaLatLng}>
-      {isAreasLoaded
-        ? areas.map((area, index) => (
-            <Polygon
-              path={area.edges}
-              strokeColor="#7CD1B8"
-              fillColor="#7CD1B8"
-              onClick={() =>
-                areaDispatch({
-                  type: SET_SHOW_AREA,
-                  payload: { showArea: true, areaDisplayIndex: index },
-                })
-              }
-            />
-          ))
-        : null}
+      <Areas />
     </GoogleMap>
   );
 }

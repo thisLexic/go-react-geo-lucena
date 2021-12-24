@@ -5,7 +5,7 @@ import Map from "./components/Map";
 import { areaReducer, defaultStateArea } from "./reducers/area";
 import { riskReducer, defaultStateRisk } from "./reducers/risk";
 import { miscReducer, defaultStateMisc } from "./reducers/misc";
-import { SET_ALL_AREAS, SET_IS_AREAS_LOADED } from "./actions/area";
+import { SET_ALL_AREAS } from "./actions/area";
 import { SET_ALL_RISKS, SET_IS_RISKS_LOADED } from "./actions/risk";
 import { SET_ERROR } from "./actions/misc";
 import { StateProviderArea, DispatchProviderArea } from "./providers/area";
@@ -28,8 +28,10 @@ function App() {
         miscDispatch({ type: SET_ERROR, payload: err });
       } else {
         response = await response.json();
-        areaDispatch({ type: SET_ALL_AREAS, payload: response.areas });
-        areaDispatch({ type: SET_IS_AREAS_LOADED, payload: true });
+        areaDispatch({
+          type: SET_ALL_AREAS,
+          payload: { areas: response.areas, isAreasLoaded: true },
+        });
       }
     }
 

@@ -1,6 +1,6 @@
 import {
   SET_ALL_AREAS,
-  SET_IS_AREAS_LOADED,
+  SET_VISIBLE_AREAS_IDS,
   SET_SHOW_AREA,
 } from "../actions/area";
 
@@ -9,13 +9,14 @@ export function areaReducer(state, action) {
     case SET_ALL_AREAS: {
       return {
         ...state,
-        areas: action.payload,
+        areas: action.payload.areas,
+        isAreasLoaded: action.payload.isAreasLoaded,
       };
     }
-    case SET_IS_AREAS_LOADED: {
+    case SET_VISIBLE_AREAS_IDS: {
       return {
         ...state,
-        isAreasLoaded: action.payload,
+        visibleAreasIDs: action.payload,
       };
     }
     case SET_SHOW_AREA: {
@@ -33,6 +34,7 @@ export function areaReducer(state, action) {
 
 export const defaultStateArea = {
   areas: [],
+  visibleAreasIDs: {},
   isAreasLoaded: false,
   areaDisplayIndex: null,
   showArea: false,
