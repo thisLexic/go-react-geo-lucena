@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -92,15 +93,27 @@ func (m *DBModel) AreaGet(id int) (*Area, error) {
 }
 
 // All returns all areas and error, if any
-func (m *DBModel) AreasAll() ([]*Area, error) {
+func (m *DBModel) AreasAll(risk ...int) ([]*Area, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `
+	where := ""
+	if len(risk) > 0 {
+		where = fmt.Sprintf(`
+		where id in (
+			select area_id
+			from area_risk 
+			where risk_id = %d
+		)
+		`, risk[0])
+	}
+
+	query := fmt.Sprintf(`
 	select id, description, created_at, updated_at 
 	from area 
+	%s
 	order by description
-	`
+	`, where)
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err

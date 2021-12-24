@@ -59,3 +59,26 @@ func (app *application) getAllRisks(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func (app *application) getAllAreasByRisk(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	riskId, err := strconv.Atoi(params.ByName("risk_id"))
+	if err != nil {
+		app.logger.Print(errors.New("invalid id parameter"))
+		app.errorJSON(w, err)
+		return
+	}
+
+	areas, err := app.models.DB.AreasAll(riskId)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, areas, "areas")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+}
