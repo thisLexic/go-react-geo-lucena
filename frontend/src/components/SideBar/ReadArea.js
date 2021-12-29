@@ -1,29 +1,22 @@
 import { useContext } from "react";
-import { Offcanvas, ListGroup } from "react-bootstrap";
+import { Offcanvas, ListGroup, Button } from "react-bootstrap";
 
-import { StateContextArea, DispatchContextArea } from "../providers/area";
-import { SET_SHOW_AREA } from "../actions/area";
+import { StateContextArea, DispatchContextArea } from "../../providers/area";
+import { SET_SHOW_AREA } from "../../actions/area";
 
-function SideBar() {
+function ReadArea() {
   const { areas, areaDisplayIndex, showArea } = useContext(StateContextArea);
   const areaDispatch = useContext(DispatchContextArea);
 
   const area = areas[areaDisplayIndex];
 
-  const closeAreaHandler = () => {
-    areaDispatch({
-      type: SET_SHOW_AREA,
-      payload: { showArea: false, areaDisplayIndex: null },
-    });
-  };
-
   return (
-    <Offcanvas show={showArea} onHide={closeAreaHandler}>
+    <>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>{area?.description}</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
-        <ListGroup>
+        <ListGroup className="my-2">
           <ListGroup.Item active key={-1}>
             Risk
           </ListGroup.Item>
@@ -31,7 +24,7 @@ function SideBar() {
             <ListGroup.Item key={index}>{risk.name}</ListGroup.Item>
           ))}
         </ListGroup>
-        <ListGroup>
+        <ListGroup className="my-2">
           <ListGroup.Item active key={-1}>
             Edge
           </ListGroup.Item>
@@ -41,9 +34,26 @@ function SideBar() {
             >{`${edge.lat}, ${edge.lng}`}</ListGroup.Item>
           ))}
         </ListGroup>
+        <Button
+          className="my-2"
+          variant="primary"
+          size="sm"
+          onClick={() => {
+            areaDispatch({
+              type: SET_SHOW_AREA,
+              payload: {
+                showArea: showArea,
+                areaDisplayIndex: areaDisplayIndex,
+                areaCRUD: "create",
+              },
+            });
+          }}
+        >
+          New
+        </Button>
       </Offcanvas.Body>
-    </Offcanvas>
+    </>
   );
 }
 
-export default SideBar;
+export default ReadArea;

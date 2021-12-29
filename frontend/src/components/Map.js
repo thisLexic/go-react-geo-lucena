@@ -30,7 +30,11 @@ function Areas() {
                 onClick={() =>
                   areaDispatch({
                     type: SET_SHOW_AREA,
-                    payload: { showArea: true, areaDisplayIndex: index },
+                    payload: {
+                      showArea: true,
+                      areaDisplayIndex: index,
+                      areaCRUD: "read",
+                    },
                   })
                 }
                 visible={visibleAreasIDs[area.id] || false}

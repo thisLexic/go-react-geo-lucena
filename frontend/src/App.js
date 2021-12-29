@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 
-import SideBar from "./components/SideBar";
+import SideBar from "./components/SideBar/SideBar";
 import Map from "./components/Map";
 import { areaReducer, defaultStateArea } from "./reducers/area";
 import { riskReducer, defaultStateRisk } from "./reducers/risk";

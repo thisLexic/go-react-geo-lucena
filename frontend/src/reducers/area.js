@@ -24,6 +24,7 @@ export function areaReducer(state, action) {
         ...state,
         areaDisplayIndex: action.payload.areaDisplayIndex,
         showArea: action.payload.showArea,
+        areaCRUD: action.payload.areaCRUD,
       };
     }
     default: {
@@ -38,4 +39,5 @@ export const defaultStateArea = {
   isAreasLoaded: false,
   areaDisplayIndex: null,
   showArea: false,
+  areaCRUD: "read",
 };
