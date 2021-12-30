@@ -35,7 +35,7 @@ function ReadArea() {
           ))}
         </ListGroup>
         <Button
-          className="my-2"
+          className="m-2"
           variant="primary"
           size="sm"
           onClick={() => {
@@ -50,6 +50,23 @@ function ReadArea() {
           }}
         >
           New
+        </Button>
+        <Button
+          className="m-2"
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            areaDispatch({
+              type: SET_SHOW_AREA,
+              payload: {
+                showArea: showArea,
+                areaDisplayIndex: areaDisplayIndex,
+                areaCRUD: "update",
+              },
+            });
+          }}
+        >
+          Edit
         </Button>
       </Offcanvas.Body>
     </>

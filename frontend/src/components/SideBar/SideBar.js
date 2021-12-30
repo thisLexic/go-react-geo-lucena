@@ -7,8 +7,11 @@ import ReadArea from "./ReadArea";
 import CreateUpdateArea from "./CreateUpdateArea";
 
 function SideBar() {
-  const { showArea, areaCRUD } = useContext(StateContextArea);
+  const { areas, areaDisplayIndex, showArea, areaCRUD } =
+    useContext(StateContextArea);
   const areaDispatch = useContext(DispatchContextArea);
+
+  const area = areas[areaDisplayIndex];
 
   const closeAreaHandler = () => {
     areaDispatch({
@@ -25,6 +28,10 @@ function SideBar() {
 
     case "create":
       sideBarBody = <CreateUpdateArea />;
+      break;
+
+    case "update":
+      sideBarBody = <CreateUpdateArea areaId={area.id} />;
       break;
 
     default:

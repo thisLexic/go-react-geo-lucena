@@ -17,5 +17,7 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/v1/risks", app.getAllRisks)
 
+	router.HandlerFunc(http.MethodPost, "/v1/admin/updatearea", app.updateArea)
+
 	return app.enableCORS(router)
 }

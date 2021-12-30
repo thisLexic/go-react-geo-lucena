@@ -82,3 +82,19 @@ func (app *application) getAllAreasByRisk(w http.ResponseWriter, r *http.Request
 		return
 	}
 }
+
+func (app *application) updateArea(w http.ResponseWriter, r *http.Request) {
+	type jsonResponse struct {
+		OK bool `json:"ok"`
+	}
+
+	ok := jsonResponse{
+		OK: true,
+	}
+
+	err := app.writeJSON(w, http.StatusOK, ok, "response")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+}

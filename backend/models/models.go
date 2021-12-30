@@ -39,8 +39,8 @@ type AreaRisk struct {
 type Area struct {
 	ID          int        `json:"id"`
 	Description string     `json:"description"`
-	CreatedAt   time.Time  `json:"-"`
-	UpdatedAt   time.Time  `json:"-"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 	Edges       []AreaEdge `json:"edges"`
 	Risks       []Risk     `json:"risks"`
 }
